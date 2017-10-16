@@ -4,17 +4,14 @@ import  { GAME_BOARD_SIZE } from './stageConstants';
 const ACTIVE_CLASSNAME = 'game-board-position_isActive';
 
 class StageViewPosition {
-    private _element: SVGRectElement;
+    private _element: SVGRectElement = null;
     private _positionModel: PositionModel;
-    private _isActive: boolean;
 
+    public isActive: boolean = false;
     public id: string;
 
     constructor(x: number, y: number) {
-        this._element = null;
         this._positionModel = new PositionModel(x, y);
-        this._isActive = false;
-
         this.id = `board-pos-${this._positionModel.y}-${this._positionModel.x}`;
 
         this.init();
@@ -54,19 +51,17 @@ class StageViewPosition {
     }
 
     public toggleIsActive(): void {
-        const nextState: boolean = !this._isActive;
+        this.isActive = !this.isActive;
 
-        this._updateViewState(nextState);
-
-        this._isActive = nextState;
+        this._updateViewState();
     }
 
     private _hasActiveClassname(): boolean {
         return this._element.classList.contains(ACTIVE_CLASSNAME);
     }
 
-    private _updateViewState(nextState: boolean): void {
-        if (nextState && !this._hasActiveClassname()) {
+    private _updateViewState(): void {
+        if (this.isActive && !this._hasActiveClassname()) {
             this._element.classList.add(ACTIVE_CLASSNAME);
 
             return;

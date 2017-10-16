@@ -1,5 +1,7 @@
 export const GAME_BOARD_SIZE = {
-    HEIGHT: 10,
-    WIDTH: 10,
-    POSITION_SIZE: 50
+    HEIGHT: 8,
+    WIDTH: 8,
+    POSITION_SIZE: 50,
+    COLLISION_THRESHOLD: 1,
+    CONFLICT_THRESHOLD: 2,
 };

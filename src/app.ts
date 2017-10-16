@@ -1,8 +1,6 @@
 import StageViewController from './stage/StageViewController';
 
 class App {
-    private _onGameBoardClickHandler: (gameBoardPositionId: string, event: MouseEvent) => void = this._onClick.bind(this);
-
     public stageViewController: StageViewController;
 
     constructor() {
@@ -28,10 +26,6 @@ class App {
 
     public enable(): this {
         return this;
-    }
-
-    private _onClick(gameBoardPositionId: string, event: MouseEvent): void {
-        console.log(gameBoardPositionId, event);
     }
 }
 
