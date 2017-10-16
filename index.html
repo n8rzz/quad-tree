@@ -4,11 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Empire</title>
+
+    <style>
+    .game-board-position {
+        fill: none;
+        stroke: black;
+        stroke-width: 1;
+        pointer-events: all;
+    }
+
+    .game-board-position:hover {
+        fill: dodgerblue;
+        stroke: magenta;
+        cursor: pointer;
+    }
+
+    .game-board-position_isActive {
+        fill: darkgreen;
+    }
+    </style>
 </head>
 <body>
     <h1>Empire</h1>
 
-    <script src="/dist/app.js" stype="text/javasript"></script>
+    <svg class="js-stage" viewbox="0 0 500 500" height="500px" width="500px"></svg>
+
+    <script src="/dist/bundle.js" stype="text/javascript"></script>
 </body>
 </html>

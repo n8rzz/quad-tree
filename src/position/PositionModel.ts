@@ -5,10 +5,10 @@ class PositionModel implements PositionInterface {
     public y: number;
     public z: number;
 
-    constructor() {
-        this.x = 0;
-        this.y = 0;
-        this.z = 0;
+    constructor(x: number, y: number, z: number = 0) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 }
 

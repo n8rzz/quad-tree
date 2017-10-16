@@ -5,9 +5,12 @@
   "author": "Nate Geslin <teamtomkins23@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "rm -rf ./dist; tsc"
+    "build": "rm -rf ./dist; mkdir dist; browserify -d src/app.ts -p [ tsify --noImplicitAny ] > dist/bundle.js"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "browserify": "^14.4.0",
+    "tsify": "^3.0.3"
+  },
   "dependencies": {
     "typescript": "^2.5.3"
   }
