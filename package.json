@@ -1,0 +1,14 @@
+{
+  "name": "empire",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Nate Geslin <teamtomkins23@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "rm -rf ./dist; tsc"
+  },
+  "devDependencies": {},
+  "dependencies": {
+    "typescript": "^2.5.3"
+  }
+}
