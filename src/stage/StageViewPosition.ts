@@ -1,13 +1,19 @@
 import PositionModel from '../position/PositionModel';
 import  { GAME_BOARD_SIZE } from './stageConstants';
 
-const ACTIVE_CLASSNAME = 'game-board-position_isActive';
+const CLASSNAME = {
+    IS_ACTIVE: 'game-board-position_isActive',
+    IS_CONFLICT: 'game-board-position_isConflict',
+    IS_COLLISION: 'game-board-position_isCollision'
+}
 
 class StageViewPosition {
     private _element: SVGRectElement = null;
     private _positionModel: PositionModel;
 
     public isActive: boolean = false;
+    public isConflict: boolean = false;
+    public isCollision: boolean = false;
     public id: string;
 
     constructor(x: number, y: number) {
@@ -53,21 +59,33 @@ class StageViewPosition {
     public toggleIsActive(): void {
         this.isActive = !this.isActive;
 
-        this._updateViewState();
+        this._updateViewStateWithClassname(this.isActive, CLASSNAME.IS_ACTIVE);
     }
 
-    private _hasActiveClassname(): boolean {
-        return this._element.classList.contains(ACTIVE_CLASSNAME);
+    public toggleIsConflict(): void {
+        this.isConflict = !this.isConflict;
+
+        this._updateViewStateWithClassname(this.isConflict, CLASSNAME.IS_CONFLICT);
     }
 
-    private _updateViewState(): void {
-        if (this.isActive && !this._hasActiveClassname()) {
-            this._element.classList.add(ACTIVE_CLASSNAME);
+    public toggleIsCollision(): void {
+        this.isCollision = !this.isCollision;
+
+        this._updateViewStateWithClassname(this.isCollision, CLASSNAME.IS_COLLISION);
+    }
+
+    private _hasClassname(classname: string): boolean {
+        return this._element.classList.contains(classname);
+    }
+
+    private _updateViewStateWithClassname(stateSwitch: boolean, classname: string): void {
+        if (stateSwitch && !this._hasClassname(classname)) {
+            this._element.classList.add(classname);
 
             return;
         }
 
-        this._element.classList.remove(ACTIVE_CLASSNAME);
+        this._element.classList.remove(classname);
     }
 }
 
