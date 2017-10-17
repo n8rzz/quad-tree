@@ -3,6 +3,9 @@ import GameObjectCollection from '../gameObject/GameObjectCollection';
 import { calculateRandomNumberInRange } from '../util/calculateRandomNumberInRange';
 import { STAGE } from './stageConfig';
 
+const CIRCLE_RADIANS = Math.PI * 2;
+const IS_COLLIDING_STROKE_STYLE = 'rgba(217, 83, 77, 0.8)';
+
 class StageController {
     public element: HTMLCanvasElement = null;
 
@@ -36,7 +39,8 @@ class StageController {
     }
 
     public layout(): this {
-        this._ctx.strokeStyle = 'rgba(239, 239, 239, 0.8)';
+        this._ctx.strokeStyle = 'rgba(234, 234, 234, 0.8)';
+        this._ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
         this._ctx.lineWidth = 1;
 
         this._buildGameObjects();
@@ -57,7 +61,7 @@ class StageController {
 
     private _buildGameObjects(): void {
         const gameObjects: GameObject[] = [];
-        const count = calculateRandomNumberInRange(10, 200);
+        const count = calculateRandomNumberInRange(10, 100);
 
         for (let i = 0; i < count; i++) {
             const x = calculateRandomNumberInRange(i, STAGE.WIDTH);
@@ -84,9 +88,8 @@ class StageController {
             const item = this._collection.items[i];
 
             this._ctx.beginPath();
-            this._ctx.moveTo(item.x, item.y);
-            this._ctx.lineTo(item.x, (item.y - item.length));
-            this._ctx.closePath();
+            this._ctx.arc(item.x, item.y, item.radius, 0, CIRCLE_RADIANS, false);
+            this._ctx.fill();
             this._ctx.stroke();
         }
 
