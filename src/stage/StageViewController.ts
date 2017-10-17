@@ -1,69 +1,69 @@
-import StageViewPosition from './StageViewPosition';
-import StageViewPositionCollection from './StageViewPositionCollection';
-import StageViewCollisionController from './StageViewCollisionController';
-import  { GAME_BOARD_SIZE } from './stageConstants';
+import GameObject from '../gameObject/GameObject';
 
-class StageViewController {
-    private _$element: SVGElement;
-    private _items: StageViewPositionCollection;
-    private _onClickHandler: (event: MouseEvent) => void = this._onClick.bind(this);
+class StageController {
+    public element: HTMLCanvasElement = null;
 
-    constructor($element: SVGElement) {
-        this._$element = $element;
-        this._items = new StageViewPositionCollection();
+    private _ctx: CanvasRenderingContext2D = null;
+    private _isEnabled: boolean = false;
+    private _items: GameObject[] = [];
 
-        this.init();
-    }
-
-    public init(): this {
-        return this.createChildren()
+    constructor(element: HTMLCanvasElement) {
+        return this.createHandlers()
+            .setupChildren(element)
             .enable();
     }
 
-    public createChildren(): this {
+    public createHandlers(): this {
+        return this;
+    }
+
+    public setupChildren(element: HTMLCanvasElement): this {
+        this.element = element;
+        this._ctx = element.getContext('2d');
+        this._items = this._buildGameObjects();
+
         return this;
     }
 
     public enable(): this {
-        this._createStageViewItems();
+        if (this._isEnabled) {
+            return this;
+        }
 
+        this._isEnabled = true;
+
+        return this.layout()
+            .render();
+    }
+
+    public layout(): this {
         return this;
     }
 
-    private _buildStageViewItemElement(heightIndex: number, widthIndex: number): StageViewPosition {
-        const item = new StageViewPosition(heightIndex, widthIndex);
-        item.addEventListener('click', this._onClickHandler);
-
-        return item;
+    public redraw(): this {
+        return this;
     }
 
-    private _createStageViewItems(): void {
-        for (let i = 0; i < GAME_BOARD_SIZE.HEIGHT; i++) {
-            for (let j = 0; j < GAME_BOARD_SIZE.WIDTH; j++) {
-                const item: StageViewPosition = this._buildStageViewItemElement(i, j);
+    public render(): this {
+        return this.redraw();
+    }
 
-                this._items.addItem(item);
-                this._$element.appendChild(item.element);
-            }
+    private _buildGameObjects(): GameObject[] {
+        const gameObjects: GameObject[] = [];
+        const canvasHeight = 500;
+        const canvasWidth = 500;
+        const count = Math.floor(Math.random() * (50 - 10 + 1)) + 10;
+
+        for (let i = 0; i < count; i++) {
+            const x = Math.floor(Math.random() * (canvasWidth - i + 1)) + i;
+            const y = Math.floor(Math.random() * (canvasHeight - i + 1)) + i;
+            const gameObject = new GameObject(x, y);
+
+            gameObjects.push(gameObject);
         }
-    }
 
-    private _findItemById(id: string): StageViewPosition {
-        return this._items.findItemById(id);
-    }
-
-    private _onClick(event: MouseEvent): void {
-        const eventTarget: SVGRectElement = event.currentTarget as SVGRectElement
-        const stageViewPosition: StageViewPosition = this._findItemById(eventTarget.id);
-
-        stageViewPosition.toggleIsActive();
-
-        this._updateCollisionsAfterClick(stageViewPosition);
-    }
-
-    private _updateCollisionsAfterClick(changedItem: StageViewPosition): void {
-
+        return gameObjects;
     }
 }
 
-export default StageViewController;
+export default StageController;

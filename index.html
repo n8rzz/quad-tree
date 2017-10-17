@@ -7,38 +7,15 @@
     <title>Empire</title>
 
     <style>
-    .game-board-position {
-        fill: none;
-        stroke: black;
-        stroke-width: 1;
-        pointer-events: all;
-    }
-
-    .game-board-position:hover {
-        fill: dodgerblue;
-        stroke: magenta;
-        cursor: pointer;
-    }
-
-    .game-board-position_isActive {
-        fill: darkgreen;
-    }
-
-    .game-board-position_isConflict {
-        stroke: yellow;
-        stroke-width: 2;
-    }
-
-    .game-board-position_isCollision {
-        stroke: red;
-        stroke-width: 4;
-    }
+        .stage {
+            background-color: mediumseagreen;
+        }
     </style>
 </head>
 <body>
     <h1>Empire</h1>
 
-    <svg class="js-stage" viewbox="0 0 500 500" height="500px" width="500px"></svg>
+    <canvas class="stage js-stage" height="500px" width="500px"></canvas>
 
     <script src="/dist/bundle.js" stype="text/javascript"></script>
 </body>

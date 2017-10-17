@@ -1,7 +1,7 @@
 import StageViewController from './stage/StageViewController';
 
 class App {
-    public stageViewController: StageViewController;
+    public stageViewController: StageViewController = null;
 
     constructor() {
         this.init();
@@ -18,7 +18,7 @@ class App {
     }
 
     public createChildren(): this {
-        const element: SVGElement = document.getElementsByClassName('js-stage')[0] as SVGElement;
+        const element: HTMLCanvasElement = document.getElementsByClassName('js-stage')[0] as HTMLCanvasElement;
         this.stageViewController = new StageViewController(element);
 
         return this;

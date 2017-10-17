@@ -1,14 +1,15 @@
-import { PositionInterface } from './position.interface';
+interface PositionInterface {
+    x: number;
+    y: number;
+}
 
 class PositionModel implements PositionInterface {
     public x: number;
     public y: number;
-    public z: number;
 
-    constructor(x: number, y: number, z: number = 0) {
+    constructor(x: number, y: number) {
         this.x = x;
         this.y = y;
-        this.z = z;
     }
 }
 
