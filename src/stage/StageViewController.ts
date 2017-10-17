@@ -57,7 +57,7 @@ class StageController {
 
     private _buildGameObjects(): void {
         const gameObjects: GameObject[] = [];
-        const count = calculateRandomNumberInRange(10, 50);
+        const count = calculateRandomNumberInRange(10, 200);
 
         for (let i = 0; i < count; i++) {
             const x = calculateRandomNumberInRange(i, STAGE.WIDTH);
@@ -96,18 +96,8 @@ class StageController {
     private _updatePositions(): void {
         for (let i = 0; i < this._collection.length; i++) {
             const item = this._collection.items[i];
-            let nextY = item.y + 5;
-            let nextX = item.x + 1;
 
-            if (nextX > STAGE.WIDTH) {
-                nextX = -5;
-            }
-
-            if (nextY > STAGE.HEIGHT) {
-                nextY = -5;
-            }
-
-            item.updatePosition(nextX, nextY);
+            item.update();
         }
     }
 }
