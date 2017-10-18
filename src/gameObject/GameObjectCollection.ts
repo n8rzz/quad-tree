@@ -26,6 +26,14 @@ class GameObjectCollection implements IBaseCollection<GameObject> {
     public removeItemById(id: string): void {
 
     }
+
+    public sortByIsColliding(): void {
+        this.items.sort((a: GameObject, b: GameObject) => {
+            return a.isColliding
+                ? -1
+                : 1;
+        });
+    }
 }
 
 export default GameObjectCollection;

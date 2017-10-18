@@ -1,22 +1,24 @@
-import PositionModel from '../position/PositionModel';
+import Rectangle from '../quadTree/Rectangle';
 import { calculateRandomNumberInRange } from '../util/calculateRandomNumberInRange';
 import { STAGE } from '../stage/stageConfig';
 
-class GameObject extends PositionModel {
+class GameObject extends Rectangle {
     public static count: number = 0;
 
     public id: number = GameObject.count++;
-    public radius: number = 10;
+    public radius: number = calculateRandomNumberInRange(5, 15);
+    public isColliding: boolean = false;
 
     private _vx: number = 1;
     private _vy: number = 1;
 
     constructor(x: number, y: number) {
-        super(x, y);
+        super(x, y, 30, 30);
 
-        this.radius = calculateRandomNumberInRange(5, 15);
-        this._vx = this.id % 2 === 0 ? calculateRandomNumberInRange(1, 2) : calculateRandomNumberInRange(-2, -1);
-        this._vy = this.id % 2 === 0 ? calculateRandomNumberInRange(1, 2) : calculateRandomNumberInRange(-2, -1);
+        this.height = this.radius * 2;
+        this.width = this.radius * 2;
+        this._vx = new Date().getTime() % 4 === 0 ? calculateRandomNumberInRange(1, 2) : calculateRandomNumberInRange(-2, -1);
+        this._vy = new Date().getTime() % 4 === 0 ? calculateRandomNumberInRange(1, 2) : calculateRandomNumberInRange(-2, -1);
     }
 
     public update(): void {
@@ -24,6 +26,18 @@ class GameObject extends PositionModel {
         this.y += this._vy;
 
         this._verifyPositionAndVelocity();
+    }
+
+    public isCollidingWithItem(compareItem: GameObject): boolean {
+        const dx: number = this.x - compareItem.x;
+        const dy: number = this.y - compareItem.y;
+        const radii: number = this.radius + compareItem.radius + 5;
+
+        return (( dx * dx ) + ( dy * dy )) < (radii * radii);
+    }
+
+    public setIsColliding(nextValue: boolean): void {
+        this.isColliding = nextValue;
     }
 
     private _isOutOfView(): boolean {
