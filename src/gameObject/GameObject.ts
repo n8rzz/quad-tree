@@ -21,17 +21,10 @@ class GameObject extends Rectangle {
         this._vy = new Date().getTime() % 4 === 0 ? calculateRandomNumberInRange(1, 2) : calculateRandomNumberInRange(-2, -1);
     }
 
-    public update(): void {
-        this.x += this._vx;
-        this.y += this._vy;
-
-        this._verifyPositionAndVelocity();
-    }
-
-    public isCollidingWithItem(compareItem: GameObject): boolean {
+    public isCollidingWithCompareItem(compareItem: GameObject): boolean {
         const dx: number = this.x - compareItem.x;
         const dy: number = this.y - compareItem.y;
-        const radii: number = this.radius + compareItem.radius + 5;
+        const radii: number = this.radius + compareItem.radius;
 
         return (( dx * dx ) + ( dy * dy )) < (radii * radii);
     }
@@ -40,6 +33,13 @@ class GameObject extends Rectangle {
         this.isColliding = nextValue;
     }
 
+    public update(): void {
+        this.x += this._vx;
+        this.y += this._vy;
+        this.isColliding = false;
+
+        this._verifyPositionAndVelocity();
+    }
     private _isOutOfView(): boolean {
         return this.x <= 0 ||
             this.y <= 0 ||
@@ -63,8 +63,6 @@ class GameObject extends Rectangle {
         if (this.y <= 0 || this.y > STAGE.HEIGHT) {
             this._vy *= -1;
         }
-
-        return this.update();
     }
 }
 

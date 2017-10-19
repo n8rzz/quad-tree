@@ -27,7 +27,7 @@ class StageController {
         this.element = element;
         this._ctx = element.getContext('2d');
         this._collection = new GameObjectCollection();
-        this._quadTree = new QuadTree(new Rectangle(0, 0, 600, 600), 8, 4);
+        this._quadTree = new QuadTree(new Rectangle(0, 0, 600, 600), 100, 4);
 
         return this;
     }
@@ -69,8 +69,8 @@ class StageController {
         const count = calculateRandomNumberInRange(10, 100);
 
         for (let i = 0; i < count; i++) {
-            const x = calculateRandomNumberInRange(i, STAGE.WIDTH);
-            const y = calculateRandomNumberInRange(i, STAGE.HEIGHT);
+            const x = calculateRandomNumberInRange(0, STAGE.WIDTH);
+            const y = calculateRandomNumberInRange(0, STAGE.HEIGHT);
             const gameObject = new GameObject(x, y);
 
             this._collection.addItem(gameObject);
@@ -139,7 +139,12 @@ class StageController {
     }
 
     private _updateConflictsForItem(item: GameObject): void {
-        const itemList: GameObject[] = this._quadTree.retrieve(item);
+        // .retrieve() is recursive and will internally return QuadTreeNodes, using cast here to inform compiler of final type
+        const itemList: GameObject[] = this._quadTree.retrieve(item) as GameObject[];
+
+        // if (itemList.length !== this._collection.length) {
+        //     console.log(item.id, itemList.length);
+        // }
 
         for (let i = 0; i < itemList.length; i++) {
             const compareItem = itemList[i];
@@ -148,13 +153,7 @@ class StageController {
                 continue;
             }
 
-            const nextIsColliding: boolean = item.isCollidingWithItem(compareItem);
-
-            if (!nextIsColliding) {
-                item.setIsColliding(nextIsColliding);
-
-                continue;
-            }
+            const nextIsColliding: boolean = item.isCollidingWithCompareItem(compareItem);
 
             if (!item.isColliding) {
                 item.setIsColliding(nextIsColliding);
