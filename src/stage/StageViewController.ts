@@ -66,7 +66,7 @@ class StageController {
 
     private _buildGameObjects(): void {
         const gameObjects: GameObject[] = [];
-        const count = calculateRandomNumberInRange(10, 100);
+        const count = calculateRandomNumberInRange(10, 200);
 
         for (let i = 0; i < count; i++) {
             const x = calculateRandomNumberInRange(0, STAGE.WIDTH);

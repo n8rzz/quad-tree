@@ -9,24 +9,28 @@ class QuadTree {
         this.root = new QuadTreeNode(bounds, 0, maxDepth, maxChildren);
     }
 
-    clear(): void {
+    public clear(): void {
         this.root.clear();
     }
 
-    insert(itemOrList: GameObject | GameObject[]): void {
-        if (!(itemOrList instanceof Array)) {
-            this.root.insert(itemOrList);
+    public insert(itemOrList: GameObject | GameObject[]): void {
+        if (itemOrList instanceof Array) {
+            this._insertItemlist(itemOrList);
 
             return;
         }
 
-        for (let i = 0; i < itemOrList.length; i++) {
-            this.root.insert(itemOrList[i]);
-        }
+        this.root.insert(itemOrList);
     }
 
-    retrieve(item: GameObject): QuadTreeNode[] | GameObject[] {
+    public retrieve(item: GameObject): QuadTreeNode[] | GameObject[] {
         return this.root.retrieve(item).slice(0);
+    }
+
+    private _insertItemlist(itemList: GameObject[]): void {
+        for (let i = 0; i < itemList.length; i++) {
+            this.root.insert(itemList[i]);
+        }
     }
 }
 
