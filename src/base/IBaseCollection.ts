@@ -5,5 +5,5 @@ export interface IBaseCollection<T> {
     addItem: (item: T) => void;
     findItemById: (id: string) => void;
     hasItem: (item: T) => boolean;
-    removeItemById: (id: string) => void;
+    removeItem: (item: T) => void;
 }

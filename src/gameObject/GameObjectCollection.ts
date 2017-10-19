@@ -1,5 +1,5 @@
 import GameObject from './GameObject';
-import { IBaseCollection } from '../base/baseCollectionInterface';
+import { IBaseCollection } from '../base/IBaseCollection';
 
 let _id = 0;
 
@@ -23,8 +23,10 @@ class GameObjectCollection implements IBaseCollection<GameObject> {
         return this.items.indexOf(item) !== -1;
     }
 
-    public removeItemById(id: string): void {
+    public removeItem(itemToRemove: GameObject): void {
+        this.items = this.items.filter((item) => item.id !== itemToRemove.id);
 
+        itemToRemove.destroy();
     }
 
     public sortByIsColliding(): void {

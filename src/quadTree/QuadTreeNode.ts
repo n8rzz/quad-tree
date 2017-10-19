@@ -50,9 +50,12 @@ class QuadTreeNode {
     findIndex(item: Rectangle): number {
         let index = NODE_POSITION.TOP_LEFT;
 
-        if (this.bounds.isLeftQuad() && this.bounds.isBottomQuad()) {
+        const isLeft: boolean = item.x > this.bounds.horizontalMidpoint;
+        const isTop: boolean = item.y > this.bounds.verticalMidpoint;
+
+        if (isLeft && !isTop) {
             index = NODE_POSITION.BOTTOM_LEFT;
-        } else if (this.bounds.isTopQuad()) {
+        } else if (!isTop) {
             index = NODE_POSITION.TOP_RIGHT;
         } else {
             index = NODE_POSITION.BOTTOM_RIGHT;
@@ -72,7 +75,7 @@ class QuadTreeNode {
 
         this.children.push(item);
 
-        if (!(this.depth >= this.maxDepth) && this.children.length > this.maxChildren) {
+        if (this.depth < this.maxDepth && this.children.length > this.maxChildren) {
             this.subdivide();
 
             for (let i = 0; i < this.children.length; i++) {
@@ -98,10 +101,10 @@ class QuadTreeNode {
 
         this.nodes[NODE_POSITION.TOP_LEFT] = new QuadTreeNode(
             new Rectangle(
-                this.bounds.subWidth,
-                this.bounds.subHeight,
-                this.bounds.x + this.bounds.subWidth,
-                this.bounds.y + this.bounds.subHeight
+                this.bounds.x,
+                this.bounds.y,
+                this.bounds.halfWidth,
+                this.bounds.halfHeight
             ),
             nextDepth,
             this.maxDepth,
@@ -110,10 +113,10 @@ class QuadTreeNode {
 
         this.nodes[NODE_POSITION.TOP_RIGHT] = new QuadTreeNode(
             new Rectangle(
-                this.bounds.x + this.bounds.subWidth,
+                this.bounds.horizontalMidpoint,
                 this.bounds.y,
-                this.bounds.subWidth,
-                this.bounds.subHeight
+                this.bounds.halfWidth,
+                this.bounds.halfHeight
             ),
             nextDepth,
             this.maxDepth,
@@ -123,9 +126,9 @@ class QuadTreeNode {
         this.nodes[NODE_POSITION.BOTTOM_LEFT] = new QuadTreeNode(
             new Rectangle(
                 this.bounds.x,
-                this.bounds.y + this.bounds.subHeight,
-                this.bounds.subWidth,
-                this.bounds.subHeight
+                this.bounds.verticalMidpoint,
+                this.bounds.halfWidth,
+                this.bounds.halfHeight
             ),
             nextDepth,
             this.maxDepth,
@@ -134,10 +137,10 @@ class QuadTreeNode {
 
         this.nodes[NODE_POSITION.BOTTOM_RIGHT] = new QuadTreeNode(
             new Rectangle(
-                this.bounds.x + this.bounds.subWidth,
-                this.bounds.y + this.bounds.subHeight,
-                this.bounds.subWidth,
-                this.bounds.subHeight
+                this.bounds.horizontalMidpoint,
+                this.bounds.verticalMidpoint,
+                this.bounds.halfWidth,
+                this.bounds.halfHeight
             ),
             nextDepth,
             this.maxDepth,

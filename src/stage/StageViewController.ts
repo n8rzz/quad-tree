@@ -48,7 +48,7 @@ class StageController {
         this._ctx.fillStyle = DEFAULT_FILL_STYLE;
         this._ctx.lineWidth = 1;
 
-        this._buildGameObjects();
+        this._populateInitialGameObjects();
 
         return this;
     }
@@ -64,16 +64,28 @@ class StageController {
         return this.redraw();
     }
 
-    private _buildGameObjects(): void {
-        const gameObjects: GameObject[] = [];
-        const count = calculateRandomNumberInRange(10, 200);
+    private _addNewItems(): void {
+        const count = calculateRandomNumberInRange(0, 25);
 
         for (let i = 0; i < count; i++) {
-            const x = calculateRandomNumberInRange(0, STAGE.WIDTH);
-            const y = calculateRandomNumberInRange(0, STAGE.HEIGHT);
-            const gameObject = new GameObject(x, y);
+            this._buildGameObject();
+        }
+    }
 
-            this._collection.addItem(gameObject);
+    private _buildGameObject(): void {
+        const x = calculateRandomNumberInRange(0, STAGE.WIDTH);
+        const y = calculateRandomNumberInRange(0, STAGE.HEIGHT);
+        const gameObject = new GameObject(x, y);
+
+        this._collection.addItem(gameObject);
+    }
+
+    private _populateInitialGameObjects(): void {
+        const gameObjects: GameObject[] = [];
+        const count = calculateRandomNumberInRange(10, 100);
+
+        for (let i = 0; i < count; i++) {
+            this._buildGameObject();
         }
     }
 
@@ -87,6 +99,7 @@ class StageController {
         this._drawGameObjects();
         this._updatePositions();
         this._updateCollisions();
+        // this._addNewItems();
     }
 
     private _drawGameObjects(): void {
@@ -123,6 +136,10 @@ class StageController {
         for (let i = 0; i < this._collection.length; i++) {
             const item = this._collection.items[i];
 
+            // if (item.isColliding) {
+            //     this._collection.removeItem(item);
+            // }
+
             item.update();
         }
     }
@@ -141,10 +158,6 @@ class StageController {
     private _updateConflictsForItem(item: GameObject): void {
         // .retrieve() is recursive and will internally return QuadTreeNodes, using cast here to inform compiler of final type
         const itemList: GameObject[] = this._quadTree.retrieve(item) as GameObject[];
-
-        // if (itemList.length !== this._collection.length) {
-        //     console.log(item.id, itemList.length);
-        // }
 
         for (let i = 0; i < itemList.length; i++) {
             const compareItem = itemList[i];

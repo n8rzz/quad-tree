@@ -21,12 +21,20 @@ class GameObject extends Rectangle {
         this._vy = new Date().getTime() % 4 === 0 ? calculateRandomNumberInRange(1, 2) : calculateRandomNumberInRange(-2, -1);
     }
 
+    public destroy(): void {
+        super.destroy();
+
+        this._vx = -1;
+        this._vy = -1;
+    }
+
     public isCollidingWithCompareItem(compareItem: GameObject): boolean {
         const dx: number = this.x - compareItem.x;
         const dy: number = this.y - compareItem.y;
         const radii: number = this.radius + compareItem.radius;
+        const positionDelta = (radii * radii) - (( dx * dx ) + ( dy * dy ));
 
-        return (( dx * dx ) + ( dy * dy )) < (radii * radii);
+        return Math.abs(positionDelta) < 500;
     }
 
     public setIsColliding(nextValue: boolean): void {
@@ -40,6 +48,7 @@ class GameObject extends Rectangle {
 
         this._verifyPositionAndVelocity();
     }
+
     private _isOutOfView(): boolean {
         return this.x <= 0 ||
             this.y <= 0 ||

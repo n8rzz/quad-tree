@@ -1,8 +1,8 @@
 class Rectangle {
-    public x: number = 0;
-    public y: number = 0;
-    public width: number = 0;
-    public height: number = 0;
+    public x: number = -1;
+    public y: number = -1;
+    public width: number = -1;
+    public height: number = -1;
 
     constructor(
         x: number,
@@ -16,38 +16,27 @@ class Rectangle {
         this.height = height;
     }
 
-    get subWidth(): number {
+    get halfWidth(): number {
         return this.width / 2
     };
 
-    get subHeight(): number {
+    get halfHeight(): number {
         return this.height / 2
     };
 
     get horizontalMidpoint(): number {
-        return this.x + this.subWidth;
+        return this.x + this.halfWidth;
     }
 
     get verticalMidpoint(): number {
-        return this.y + this.subHeight;
+        return this.y + this.halfHeight;
     }
 
-    public isTopQuad(): boolean {
-        return this.y < this.horizontalMidpoint &&
-            this.y + this.height < this.horizontalMidpoint;
-    }
-
-    public isBottomQuad(): boolean {
-        return this.y > this.horizontalMidpoint;
-    }
-
-    public isLeftQuad(): boolean {
-        return this.x < this.verticalMidpoint &&
-            this.x + this.width < this.verticalMidpoint;
-    }
-
-    public isRightQuad(): boolean {
-        return this.x > this.verticalMidpoint;
+    destroy(): void {
+        this.x = -1;
+        this.y = -1;
+        this.width = -1;
+        this.height = -1;
     }
 }
 
